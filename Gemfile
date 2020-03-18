@@ -47,3 +47,6 @@ gem "active_model_serializers", "~> 0.10.10"
 gem "rack-cors", "~> 1.1"
 
 gem "geocoder", "~> 1.6"
+
+gem "dalli", "~> 2.7"
+gem "memcachier", "~> 0.0.2"

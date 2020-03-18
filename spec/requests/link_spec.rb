@@ -4,7 +4,7 @@ RSpec.describe 'Links API', type: :request do
   let!(:links) { create_list(:link, 10) }
 
   describe 'all' do
-    before { get '/api/v1/links' }
+    before { get api_v1_links_index_path }
 
     it 'returns all the links' do
       expect(links).not_to be_empty
@@ -17,7 +17,7 @@ RSpec.describe 'Links API', type: :request do
   end
 
   describe 'count' do
-    before { get '/api/v1/count' }
+    before { get api_v1_links_count_path }
 
     it 'counts all the links' do
       expect(json).to eq(10)
@@ -32,7 +32,7 @@ RSpec.describe 'Links API', type: :request do
     } }
 
     context 'when the request is valid' do
-      before { post '/api/v1/links', params: valid_attributes }
+      before { post api_v1_links_create_path, params: valid_attributes }
 
       it 'stores a link' do
         expect(json['url']).to eq(valid_attributes[:url])
@@ -44,7 +44,7 @@ RSpec.describe 'Links API', type: :request do
     end
 
     context 'whe there is only url' do
-      before { post '/api/v1/links', params: { url: valid_attributes[:url] } }
+      before { post api_v1_links_create_path, params: { url: valid_attributes[:url] } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -57,7 +57,7 @@ RSpec.describe 'Links API', type: :request do
     end
 
     context 'when there is only shortened' do
-      before { post '/api/v1/links', params: { shortened: valid_attributes[:shortened] } }
+      before { post api_v1_links_create_path, params: { shortened: valid_attributes[:shortened] } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -71,11 +71,11 @@ RSpec.describe 'Links API', type: :request do
 
     context 'when there is the same url' do
 
-      before { post '/api/v1/links', params: {
+      before { post api_v1_links_create_path, params: {
         url: valid_attributes[:url],
         shortened: Faker::Number.unique.number
       } }
-      before { post '/api/v1/links', params: {
+      before { post api_v1_links_create_path, params: {
         url: valid_attributes[:url],
         shortened: Faker::Number.unique.number
       } }
@@ -92,11 +92,11 @@ RSpec.describe 'Links API', type: :request do
 
     context 'when there is the same shortened' do
 
-      before { post '/api/v1/links', params: {
+      before { post api_v1_links_create_path, params: {
         url: Faker::Internet.unique.url,
         shortened: valid_attributes[:shortened]
       } }
-      before { post '/api/v1/links', params: {
+      before { post api_v1_links_create_path, params: {
         url: Faker::Internet.unique.url,
         shortened: valid_attributes[:shortened]
       } }
@@ -119,10 +119,10 @@ RSpec.describe 'Links API', type: :request do
       shortened: Faker::Number.number
     } }
 
-    before { post '/api/v1/get', params: { url: valid_attributes[:url] }}
+    before { post api_v1_links_get_path, params: { url: valid_attributes[:url] }}
 
     context 'when there is a link' do
-      before { post '/api/v1/links', params: valid_attributes }
+      before { post api_v1_links_create_path, params: valid_attributes }
 
       it 'returns shortened for it' do
         expect(json).not_to be_empty

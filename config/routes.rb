@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       resources :links
       resources :redirects
       get 'count', to: 'links#count', as: 'count'
+      post 'get', to: 'links#get', as: 'get'
     end
   end
 end

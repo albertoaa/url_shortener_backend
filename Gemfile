@@ -28,6 +28,9 @@ gem 'bootsnap', '>= 1.4.2', require: false
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'factory_bot'
+  gem 'shoulda-matchers'
+  gem 'database_cleaner'
 end
 
 group :development do
@@ -52,3 +55,5 @@ gem "dalli", "~> 2.7"
 gem "memcachier", "~> 0.0.2"
 
 gem "rack-attack", "~> 6.2"
+
+gem "rspec-rails", "~> 3.9"

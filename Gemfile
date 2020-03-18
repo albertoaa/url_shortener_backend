@@ -50,3 +50,5 @@ gem "geocoder", "~> 1.6"
 
 gem "dalli", "~> 2.7"
 gem "memcachier", "~> 0.0.2"
+
+gem "rack-attack", "~> 6.2"

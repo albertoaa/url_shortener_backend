@@ -40,6 +40,8 @@ module UrlShortenerBackend
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'
+        # TODO add frontend url exception like this
+        # origins 'https://vue-shortener.herokuapp.com', 'http://vue-shortener.herokuapp.com'
         resource '*', :headers => :any, :methods => [:get, :post, :options]
       end
     end

@@ -41,3 +41,9 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "faker", "~> 2.10"
+
+gem "active_model_serializers", "~> 0.10.10"
+
+gem "rack-cors", "~> 1.1"
+
+gem "geocoder", "~> 1.6"

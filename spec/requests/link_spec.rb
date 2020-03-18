@@ -119,18 +119,19 @@ RSpec.describe 'Links API', type: :request do
       shortened: Faker::Number.number
     } }
 
-    before { post api_v1_links_get_path, params: { url: valid_attributes[:url] }}
 
     context 'when there is a link' do
       before { post api_v1_links_create_path, params: valid_attributes }
+      before { post api_v1_links_get_path, params: { url: valid_attributes[:url] }}
 
       it 'returns shortened for it' do
         expect(json).not_to be_empty
-        expect(json['shortened']).to eq(valid_attributes[:shortened].to_s)
+        expect(json['shortened']).to eq("#{request.base_url}/#{valid_attributes[:shortened]}")
       end
     end
 
     context 'when there is no link' do
+      before { post api_v1_links_get_path, params: { url: valid_attributes[:url] }}
       it 'returns nothing' do
         expect(response.body).to be_empty
       end

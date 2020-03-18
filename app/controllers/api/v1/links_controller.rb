@@ -49,7 +49,7 @@ class Api::V1::LinksController < ApplicationController
     @link = Link.where(url: link_params[:url]).first
 
     if @link
-      render json: {shortened: @link.shortened}
+      render json: {shortened:  "#{request.base_url}/#{@link.shortened}" }
     else
       render json: nil, head: :no_content, status: 204
     end

@@ -1,4 +1,4 @@
-class RedirectController < ApplicationController
+class Api::V1::RedirectController < ApplicationController
   before_action :set_redirect, only: [:show, :update, :destroy]
 
   # GET /redirects
@@ -42,6 +42,9 @@ class RedirectController < ApplicationController
     @link = Link.where(shortened: params[:shortened]).first
 
     if @link
+      user_location = "#{request.location.country}, #{request.location.city}, #{request.location.address}"
+      redirect = Redirect.new( location: user_location, time: Time.now )
+      @link.redirects << redirect
       redirect_to @link.url
     else
       render json: { error: 'bad link'}, status: :unprocessable_entity

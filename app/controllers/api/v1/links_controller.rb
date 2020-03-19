@@ -26,10 +26,17 @@ class Api::V1::LinksController < ApplicationController
     @link = Link.where(url: link_params[:url]).first
 
     if @link
+      @link.update(times_accessed: @link.times_accessed + 1)
       render json: {shortened:  "#{request.base_url}/#{@link.shortened}" }
     else
       render json: nil, head: :no_content, status: 204
     end
+  end
+
+  def top_100
+    @links = Link.all.order(times_accessed: :desc).limit(100)
+
+    render json: @links
   end
 
   private

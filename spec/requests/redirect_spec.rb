@@ -6,7 +6,7 @@ RSpec.describe 'Redirection', type: :request do
   describe 'redirect' do
 
     context 'when there is such link' do
-      before { get api_v1_redirect_path(links.first.shortened) }
+      before { get redirect_path(links.first.shortened) }
 
       it 'redirects successfully with 302' do
         expect(response).to have_http_status(302)
@@ -19,7 +19,7 @@ RSpec.describe 'Redirection', type: :request do
     end
 
     context 'when there is no such link' do
-      before { get api_v1_redirect_path(links.first.shortened + 'randomsalt') }
+      before { get redirect_path(links.first.shortened + 'randomsalt') }
 
       it 'responds with unprocessable entity' do
         expect(response).to have_http_status(422)

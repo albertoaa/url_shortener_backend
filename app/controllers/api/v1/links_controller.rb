@@ -44,6 +44,12 @@ class Api::V1::LinksController < ApplicationController
     render json: @count
   end
 
+  # GET LINK BY URL
+  def get
+    @link = Link.where(url: link_params[:url])
+    render json: @link
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_link

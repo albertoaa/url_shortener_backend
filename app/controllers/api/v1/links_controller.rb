@@ -46,8 +46,9 @@ class Api::V1::LinksController < ApplicationController
 
   # GET LINK BY URL
   def get
-    @link = Link.where(url: link_params[:url])
-    render json: @link
+    @link = Link.where(url: link_params[:url]).first
+
+    render json: @link.shortened if @link
   end
 
   private

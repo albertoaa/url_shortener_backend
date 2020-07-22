@@ -38,6 +38,12 @@ class Api::V1::LinksController < ApplicationController
     @link.destroy
   end
 
+  # GET TOTAL OF LINKS /count
+  def count
+    @count = Link.count
+    render json: @count
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_link

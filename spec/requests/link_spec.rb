@@ -17,6 +17,14 @@ RSpec.describe 'Links API', type: :request do
     end
   end
 
+  describe 'count' do
+    before { get '/api/v1/count' }
+
+    it 'counts all the links' do
+      expect(json).to eq(10)
+    end
+  end
+
   describe 'store link' do
     # valid payload
     let(:valid_attributes) { {

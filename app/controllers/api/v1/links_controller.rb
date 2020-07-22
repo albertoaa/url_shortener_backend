@@ -46,6 +46,6 @@ class Api::V1::LinksController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def link_params
-      params.require(:link).permit(:url, :shortened)
+      params.permit(:url, :shortened)
     end
 end

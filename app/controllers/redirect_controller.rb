@@ -1,4 +1,4 @@
-class RedirectsController < ApplicationController
+class RedirectController < ApplicationController
   before_action :set_redirect, only: [:show, :update, :destroy]
 
   # GET /redirects
@@ -38,6 +38,16 @@ class RedirectsController < ApplicationController
     @redirect.destroy
   end
 
+  def redirect
+    @link = Link.where(shortened: params[:shortened]).first
+
+    if @link
+      redirect_to @link.url
+    else
+      render json: { error: 'bad link'}, status: :unprocessable_entity
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_redirect
@@ -46,6 +56,6 @@ class RedirectsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def redirect_params
-      params.require(:redirect).permit(:location, :time)
+      params.permit(:location, :time)
     end
 end

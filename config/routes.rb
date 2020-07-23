@@ -7,4 +7,5 @@ Rails.application.routes.draw do
       post 'get', to: 'links#get', as: 'get'
     end
   end
+  get '/:shortened', to: 'redirect#redirect', as: 'redirect'
 end

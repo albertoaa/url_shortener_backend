@@ -18,7 +18,7 @@ class Api::V1::LinksController < ApplicationController
     @link = Link.new(link_params)
 
     if @link.save
-      render json: @link, status: :created, location: api_v1_link_url(@link)
+      render json: @link, status: :created, location: api_v1_links_get_url(@link)
     else
       render json: @link.errors, status: :unprocessable_entity
     end

@@ -112,4 +112,33 @@ RSpec.describe 'Links API', type: :request do
       end
     end
   end
+
+  describe 'get' do
+    # valid payload
+    let(:valid_attributes) { {
+      url: Faker::Internet.url,
+      shortened: Faker::TvShows::FamilyGuy.character
+    } }
+
+    before { post '/api/v1/get', params: { url: valid_attributes[:url] }}
+
+    context 'when there is a link' do
+      before { post '/api/v1/links', params: valid_attributes }
+
+      it 'returns shortened for it' do
+        expect(json).not_to be_empty
+        expect(json['shortened']).to eq(valid_attributes[:shortened])
+      end
+    end
+
+    context 'when there is no link' do
+      it 'returns nothing' do
+        expect(response.body).to be_empty
+      end
+
+      it 'returns status code 204' do
+        expect(response).to have_http_status(204)
+      end
+    end
+  end
 end

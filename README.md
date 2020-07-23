@@ -1,24 +1,33 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Installation and setup
 
-Things you may want to cover:
+### Ruby version
 
-* Ruby version
+Check that you have installed and currently using ruby version `2.6.5` with `ruby -v`.
 
-* System dependencies
+### Clone the project
 
-* Configuration
+Clone the project into your computer with `git clone <url of this project>`
 
-* Database creation
+### Install dependencies
 
-* Database initialization
+Go into the project folder and install dependencies with `bundler install` if you don't have bundler installed already install it with `gem install bundler`
 
-* How to run the test suite
+### Database
 
-* Services (job queues, cache servers, search engines, etc.)
+To create the database be sure that you have a Postgres local installation configured properly.
+Create the database with `rails db:create`
+Migrate tables with `rails db:migrate`
 
-* Deployment instructions
+- Optional: Add some example seeds with `rails db:seed`
 
-* ...
+### Tests
+
+Run the projects tests executing `rspec` in the project folder.
+
+### Start the project
+
+Run the project with: `rails s`
+
+- Note: If your started the react-frontend project, associated with the project, first please specify a port with `-p` option like this: `rails s -p 8080` and change the file `src/utils/url.js` on the react-frontend project to match the specified port

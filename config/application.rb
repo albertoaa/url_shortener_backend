@@ -35,5 +35,6 @@ module UrlShortenerBackend
     config.api_only = true
     config.middleware.use Rack::Attack
     config.generators.test_framework :rspec
+    config.autoload_paths << Rails.root.join('app/validators')
   end
 end

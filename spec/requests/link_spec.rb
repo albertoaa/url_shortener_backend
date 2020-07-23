@@ -28,7 +28,7 @@ RSpec.describe 'Links API', type: :request do
     # valid payload
     let(:valid_attributes) { {
       url: Faker::Internet.url,
-      shortened: Faker::TvShows::FamilyGuy.character
+      shortened: Faker::Number.number
     } }
 
     context 'when the request is valid' do
@@ -52,7 +52,7 @@ RSpec.describe 'Links API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match("{\"shortened\":[\"can't be blank\"]}")
+          .to match("{\"shortened\":[\"can't be blank\",\"must be a valid Base62\"]}")
       end
     end
 
@@ -65,7 +65,7 @@ RSpec.describe 'Links API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match("{\"url\":[\"can't be blank\"]}")
+          .to match("{\"url\":[\"can't be blank\",\"must be a valid URL\"]}")
       end
     end
 
@@ -73,11 +73,11 @@ RSpec.describe 'Links API', type: :request do
 
       before { post '/api/v1/links', params: {
         url: valid_attributes[:url],
-        shortened: Faker::Name.unique.name
+        shortened: Faker::Number.unique.number
       } }
       before { post '/api/v1/links', params: {
         url: valid_attributes[:url],
-        shortened: Faker::Name.unique.name
+        shortened: Faker::Number.unique.number
       } }
 
       it 'returns status code 422' do
@@ -116,7 +116,7 @@ RSpec.describe 'Links API', type: :request do
     # valid payload
     let(:valid_attributes) { {
       url: Faker::Internet.url,
-      shortened: Faker::TvShows::FamilyGuy.character
+      shortened: Faker::Number.number
     } }
 
     before { post '/api/v1/get', params: { url: valid_attributes[:url] }}
@@ -126,7 +126,7 @@ RSpec.describe 'Links API', type: :request do
 
       it 'returns shortened for it' do
         expect(json).not_to be_empty
-        expect(json['shortened']).to eq(valid_attributes[:shortened])
+        expect(json['shortened']).to eq(valid_attributes[:shortened].to_s)
       end
     end
 

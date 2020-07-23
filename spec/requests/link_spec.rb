@@ -44,7 +44,7 @@ RSpec.describe 'Links API', type: :request do
       end
     end
 
-    context 'when the request is invalid' do
+    context 'whe there is only url' do
       before { post '/api/v1/links', params: { url: valid_attributes[:url] } }
 
       it 'returns status code 422' do
@@ -54,6 +54,61 @@ RSpec.describe 'Links API', type: :request do
       it 'returns a validation failure message' do
         expect(response.body)
           .to match("{\"shortened\":[\"can't be blank\"]}")
+      end
+    end
+
+    context 'when there is only shortened' do
+      before { post '/api/v1/links', params: { shortened: valid_attributes[:shortened] } }
+
+      it 'returns status code 422' do
+        expect(response).to have_http_status(422)
+      end
+
+      it 'returns a validation failure message' do
+        expect(response.body)
+          .to match("{\"url\":[\"can't be blank\"]}")
+      end
+    end
+
+    context 'when there is the same url' do
+
+      before { post '/api/v1/links', params: {
+        url: valid_attributes[:url],
+        shortened: Faker::Name.unique.name
+      } }
+      before { post '/api/v1/links', params: {
+        url: valid_attributes[:url],
+        shortened: Faker::Name.unique.name
+      } }
+
+      it 'returns status code 422' do
+        expect(response).to have_http_status(422)
+      end
+
+      it 'returns a validation failure message' do
+        expect(response.body)
+          .to match("{\"url\":[\"has already been taken\"]}")
+      end
+    end
+
+    context 'when there is the same shortened' do
+
+      before { post '/api/v1/links', params: {
+        url: Faker::Internet.unique.url,
+        shortened: valid_attributes[:shortened]
+      } }
+      before { post '/api/v1/links', params: {
+        url: Faker::Internet.unique.url,
+        shortened: valid_attributes[:shortened]
+      } }
+
+      it 'returns status code 422' do
+        expect(response).to have_http_status(422)
+      end
+
+      it 'returns a validation failure message' do
+        expect(response.body)
+          .to match("{\"shortened\":[\"has already been taken\"]}")
       end
     end
   end

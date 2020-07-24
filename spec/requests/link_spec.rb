@@ -7,8 +7,8 @@ RSpec.describe 'Links API', type: :request do
     before { get api_v1_links_index_path }
 
     it 'returns all the links' do
-      expect(links).not_to be_empty
-      expect(links.size).to eq(10)
+      expect(json).not_to be_empty
+      expect(json.size).to eq(10)
     end
 
     it 'returns status code 200' do
@@ -24,94 +24,6 @@ RSpec.describe 'Links API', type: :request do
     end
   end
 
-  describe 'store link' do
-    # valid payload
-    let(:valid_attributes) { {
-      url: Faker::Internet.url,
-      shortened: Faker::Number.number
-    } }
-
-    context 'when the request is valid' do
-      before { post api_v1_links_create_path, params: valid_attributes }
-
-      it 'stores a link' do
-        expect(json['url']).to eq(valid_attributes[:url])
-      end
-
-      it 'returns status code 201' do
-        expect(response).to have_http_status(201)
-      end
-    end
-
-    context 'whe there is only url' do
-      before { post api_v1_links_create_path, params: { url: valid_attributes[:url] } }
-
-      it 'returns status code 422' do
-        expect(response).to have_http_status(422)
-      end
-
-      it 'returns a validation failure message' do
-        expect(response.body)
-          .to match("{\"shortened\":[\"can't be blank\",\"must be a valid Base62\"]}")
-      end
-    end
-
-    context 'when there is only shortened' do
-      before { post api_v1_links_create_path, params: { shortened: valid_attributes[:shortened] } }
-
-      it 'returns status code 422' do
-        expect(response).to have_http_status(422)
-      end
-
-      it 'returns a validation failure message' do
-        expect(response.body)
-          .to match("{\"url\":[\"can't be blank\",\"must be a valid URL\"]}")
-      end
-    end
-
-    context 'when there is the same url' do
-
-      before { post api_v1_links_create_path, params: {
-        url: valid_attributes[:url],
-        shortened: Faker::Number.unique.number
-      } }
-      before { post api_v1_links_create_path, params: {
-        url: valid_attributes[:url],
-        shortened: Faker::Number.unique.number
-      } }
-
-      it 'returns status code 422' do
-        expect(response).to have_http_status(422)
-      end
-
-      it 'returns a validation failure message' do
-        expect(response.body)
-          .to match("{\"url\":[\"has already been taken\"]}")
-      end
-    end
-
-    context 'when there is the same shortened' do
-
-      before { post api_v1_links_create_path, params: {
-        url: Faker::Internet.unique.url,
-        shortened: valid_attributes[:shortened]
-      } }
-      before { post api_v1_links_create_path, params: {
-        url: Faker::Internet.unique.url,
-        shortened: valid_attributes[:shortened]
-      } }
-
-      it 'returns status code 422' do
-        expect(response).to have_http_status(422)
-      end
-
-      it 'returns a validation failure message' do
-        expect(response.body)
-          .to match("{\"shortened\":[\"has already been taken\"]}")
-      end
-    end
-  end
-
   describe 'get' do
     # valid payload
     let(:valid_attributes) { {
@@ -119,9 +31,8 @@ RSpec.describe 'Links API', type: :request do
       shortened: Faker::Number.number
     } }
 
-
     context 'when there is a link' do
-      before { post api_v1_links_create_path, params: valid_attributes }
+      before { post api_v1_links_store_path, params: valid_attributes }
       before { post api_v1_links_get_path, params: { url: valid_attributes[:url] }}
 
       it 'returns shortened for it' do
@@ -132,12 +43,33 @@ RSpec.describe 'Links API', type: :request do
 
     context 'when there is no link' do
       before { post api_v1_links_get_path, params: { url: valid_attributes[:url] }}
+
       it 'returns nothing' do
         expect(response.body).to be_empty
       end
 
       it 'returns status code 204' do
         expect(response).to have_http_status(204)
+      end
+    end
+  end
+
+  describe 'store' do
+    # valid payload
+    let(:valid_attributes) { {
+      url: Faker::Internet.url,
+      shortened: Faker::Number.number
+    } }
+
+    context 'when the request is valid' do
+      before { post api_v1_links_store_path, params: valid_attributes }
+
+      it 'stores a link' do
+        expect(json['url']).to eq(valid_attributes[:url])
+      end
+
+      it 'returns status code 201' do
+        expect(response).to have_http_status(201)
       end
     end
   end

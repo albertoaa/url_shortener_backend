@@ -51,7 +51,7 @@ gem "rack-cors", "~> 1.1"
 
 gem "geocoder", "~> 1.6"
 
-gem "dalli", "~> 2.7"
+gem "dalli", "~> 3.2"
 gem "memcachier", "~> 0.0.2"
 
 gem "rack-attack", "~> 6.2"
